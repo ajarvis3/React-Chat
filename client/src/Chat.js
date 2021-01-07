@@ -86,7 +86,7 @@ function Chat(props)
     const [group, setGroup] = useState("");
     console.log("top", messages);
 
-
+    // Sets up signalr callback
     const receiveMessage = useCallback((user, message, id) => {
             console.log(id, messages);
             const newMessages = messages.slice();
@@ -96,6 +96,7 @@ function Chat(props)
             console.log(messages, newMessages);
     });
 
+    // Sets up receiving message
     useEffect(() => {
         if (props.connected) {
             props.connection.on(`ReceiveMessage${group}`, receiveMessage);
