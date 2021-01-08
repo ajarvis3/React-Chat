@@ -1,0 +1,41 @@
+.style-button {
+    background-color: seagreen;
+    color: white;
+    height: 30px;
+    margin: 10px auto;
+    border: none;
+}
+
+.chat-group {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 0px auto;
+}
+
+.group-connection {
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+}
+
+.new-message {
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+}
+
+.new-message-text {
+    display: flex;
+    flex-direction: row;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+}
+
+.style-ta {
+    resize: none;
+    margin: 5px auto;
+}
