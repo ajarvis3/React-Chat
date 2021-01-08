@@ -63,24 +63,37 @@ function SendMessage(props)
 }
 
 /**
+ * Delete button for this chat
+ * @param {*} props 
+ */
+function Delete(props) 
+{
+    return (
+        <div className="delete-area">
+            <button className="style-button" onClick={props.delete}>
+                Remove
+            </button>
+        </div>
+    )
+}
+
+/**
  * Represents a single chat group
  * @param {*} props 
  */
 function Chat(props)
 {
     const [messages, setMessages] = useState([]);
-    // In props now
-    // const [group, setGroup] = useState("");
+
+    // Sets up signalr callback
+    const receiveMessage = (user, message, id) => {
+        const newMessages = messages.slice();
+        newMessages.push({user: user, message: message, id: id});
+        setMessages(newMessages);
+    };    
 
     // Sets up receiving message
     useEffect(() => {
-        // Sets up signalr callback
-        const receiveMessage = (user, message, id) => {
-            const newMessages = messages.slice();
-            newMessages.push({user: user, message: message, id: id});
-            setMessages(newMessages);
-        };    
-
         if (props.connected) {
             props.connection.on(`ReceiveMessage${props.group}`, receiveMessage);
         }
@@ -89,7 +102,7 @@ function Chat(props)
         return function cleanup() {
             props.connection.off(`ReceiveMessage${props.group}`, receiveMessage);
         }
-    }, [props.group, messages, props.connected, props.connection]);
+    }, [props.group, messages, props.connected, props.connection, receiveMessage]);
 
     const messageComponents = messages.map((value) => {
         return (
@@ -99,6 +112,10 @@ function Chat(props)
 
     return (
         <div className="chat-group">
+            {props.group}
+            <Delete 
+                group={props.group} 
+                delete={() => props.delete(props.group)} />
             <SendMessage connection={props.connection} connected={props.connected} group={props.group} />
             {messageComponents}
         </div>

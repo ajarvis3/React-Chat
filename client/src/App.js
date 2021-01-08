@@ -11,6 +11,16 @@ function AddGroup(props)
 {
   const [group, setGroup] = useState("");
 
+  function deleteChat(name)
+  {
+    const index = props.chats.findIndex((elem) => {
+      return elem.key === name;
+    });
+    const newChats = props.chats.splice(index, 1);
+    props.setChats(newChats);
+    props.connection.send("UnsubscribeChat", name);
+  }
+
   const handleButton = () => {
     if (props.connected)
     {
@@ -20,7 +30,8 @@ function AddGroup(props)
                         key={group}
                         connected={props.connected}
                         connection={props.connection}
-                        group={group} />);
+                        group={group} 
+                        delete={(name) => deleteChat(name)}/>);
         props.setChats(newChats);
         setGroup("");    
     }
