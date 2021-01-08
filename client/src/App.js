@@ -1,7 +1,7 @@
 import './App.css';
 import connect from './MySignalR.js';
 import Chat from "./Chat.js";
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 /**
  * Contains logic for adding a group
@@ -9,20 +9,40 @@ import React, {useState, useEffect} from 'react';
  */
 function AddGroup(props) 
 {
+  const [group, setGroup] = useState("");
 
-  function handleClick()
-  {
-    const newChats = props.chats.slice();
-    newChats.push(<Chat 
-                    key={newChats.length}
-                    connected={props.connected}
-                    connection={props.connection} />);
-    props.setChats(newChats);
+  const handleButton = () => {
+    if (props.connected)
+    {
+        props.connection.send("SubscribeToChat", group);   
+        const newChats = props.chats.slice();
+        newChats.push(<Chat 
+                        key={group}
+                        connected={props.connected}
+                        connection={props.connection}
+                        group={group} />);
+        props.setChats(newChats);
+        setGroup("");    
+    }
   }
+
+  const handleChange = useCallback((event) => {
+      if (props.connected)
+      {
+          setGroup(event.target.value);
+      }
+  }, [props.connected]);
 
   return (
     <div className="add-group">
-      <button className="style-button" onClick={handleClick}>Add a Chat</button>
+            <textarea 
+                className="style-ta" 
+                value={group} 
+                onChange={handleChange} 
+                placeholder="Group Name"/>
+            <button onClick={handleButton} disabled={!props.connected} className="style-button">
+                Join Group
+            </button>
     </div>
   );
 

@@ -1,5 +1,7 @@
 .add-group {
-  margin: 0px auto;
+  display: flex;
+  flex-direction: column;
+  margin: 10px auto;
 }
 
 .app {
@@ -11,4 +13,21 @@
 .chats {
   display:flex;
   flex-direction: row;
+}
+
+.style-button {
+  background-color: seagreen;
+  color: white;
+  height: 30px;
+  margin: 10px auto;
+  border: none;
+}
+
+.style-button.disabled {
+  background-color: gray;
+}
+
+.style-ta {
+  resize: none;
+  margin: 5px auto;
 }

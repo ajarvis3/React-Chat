@@ -1,5 +1,5 @@
 import "./Chat.css";
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 
 /**
  * Represents a single message
@@ -63,54 +63,14 @@ function SendMessage(props)
 }
 
 /**
- * Components to make a connection
- * @param {*} props 
- */
-function Connect(props)
-{
-    const [desc, setDesc] = useState("Join Group:");
-    const [text, setText] = useState("");
-
-    const handleButton = () => {
-        if (props.connected)
-        {
-            props.connection.send("SubscribeToChat", text);   
-            setDesc(text);
-            props.setValue(text);
-        }
-    }
-
-    const handleChange = useCallback((event) => {
-        if (props.connected)
-        {
-            setText(event.target.value);
-            // props.setValue(event.target.value);
-        }
-    }, [props.connected]);
-
-    return (
-        <div className="group-connection">
-            {desc}
-            <textarea 
-                className="style-ta" 
-                value={text} 
-                onChange={handleChange} 
-                placeholder="Group Name"/>
-            <button onClick={handleButton} disabled={!props.connected} className="style-button">
-                Join Group
-            </button>
-        </div>
-    )
-}
-
-/**
  * Represents a single chat group
  * @param {*} props 
  */
 function Chat(props)
 {
     const [messages, setMessages] = useState([]);
-    const [group, setGroup] = useState("");
+    // In props now
+    // const [group, setGroup] = useState("");
 
     // Sets up receiving message
     useEffect(() => {
@@ -122,14 +82,14 @@ function Chat(props)
         };    
 
         if (props.connected) {
-            props.connection.on(`ReceiveMessage${group}`, receiveMessage);
+            props.connection.on(`ReceiveMessage${props.group}`, receiveMessage);
         }
 
         // prevent multiple calls to event handler
         return function cleanup() {
-            props.connection.off(`ReceiveMessage${group}`, receiveMessage);
+            props.connection.off(`ReceiveMessage${props.group}`, receiveMessage);
         }
-    }, [group, messages, props.connected, props.connection]);
+    }, [props.group, messages, props.connected, props.connection]);
 
     const messageComponents = messages.map((value) => {
         return (
@@ -139,15 +99,7 @@ function Chat(props)
 
     return (
         <div className="chat-group">
-            <Connect 
-                value={group} 
-                setValue={setGroup}
-                connected={props.connected} 
-                connection={props.connection}
-                messages={messages}
-                setMessages={setMessages}
-            />
-            <SendMessage connection={props.connection} connected={props.connected} group={group} />
+            <SendMessage connection={props.connection} connected={props.connected} group={props.group} />
             {messageComponents}
         </div>
     )
