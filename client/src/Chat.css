@@ -6,6 +6,10 @@
     border: none;
 }
 
+.style-button.disabled {
+    background-color: gray;
+}
+
 .chat-group {
     display: flex;
     flex-direction: column;

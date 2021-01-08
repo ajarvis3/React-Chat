@@ -1,5 +1,5 @@
 import "./Chat.css";
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 /**
  * Represents a single message
@@ -31,6 +31,7 @@ function SendMessage(props)
     function sendMessage()
     {
         props.connection.send('SendMessage', name, message, props.group);
+        setMessage("");
     }
 
     function handleChange(event) {
@@ -53,7 +54,7 @@ function SendMessage(props)
                 className="style-ta" 
                 value={message} 
                 onChange={handleChange} 
-                placeholder="Group" />
+                placeholder="Message" />
             <button onClick={sendMessage} disabled={!props.connected} className="style-button">
                 Send Message
             </button>
@@ -67,27 +68,32 @@ function SendMessage(props)
  */
 function Connect(props)
 {
+    const [desc, setDesc] = useState("Join Group:");
+    const [text, setText] = useState("");
+
     const handleButton = () => {
         if (props.connected)
         {
-            props.connection.send("SubscribeToChat", props.value);    
+            props.connection.send("SubscribeToChat", text);   
+            setDesc(text);
+            props.setValue(text);
         }
     }
 
-    function handleChange(event)
-    {
+    const handleChange = useCallback((event) => {
         if (props.connected)
         {
-            props.setValue(event.target.value);
+            setText(event.target.value);
+            // props.setValue(event.target.value);
         }
-    }
+    }, [props.connected]);
 
     return (
         <div className="group-connection">
-            Join Group:
+            {desc}
             <textarea 
                 className="style-ta" 
-                value={props.value} 
+                value={text} 
                 onChange={handleChange} 
                 placeholder="Group Name"/>
             <button onClick={handleButton} disabled={!props.connected} className="style-button">
@@ -105,21 +111,25 @@ function Chat(props)
 {
     const [messages, setMessages] = useState([]);
     const [group, setGroup] = useState("");
-    console.log("top", messages);
-
-    // Sets up signalr callback
-    const receiveMessage = (user, message, id) => {
-            const newMessages = messages.slice();
-            newMessages.push({user: user, message: message, id: id});
-            setMessages(newMessages);
-    };
 
     // Sets up receiving message
     useEffect(() => {
+        // Sets up signalr callback
+        const receiveMessage = (user, message, id) => {
+            const newMessages = messages.slice();
+            newMessages.push({user: user, message: message, id: id});
+            setMessages(newMessages);
+        };    
+
         if (props.connected) {
             props.connection.on(`ReceiveMessage${group}`, receiveMessage);
         }
-    });
+
+        // prevent multiple calls to event handler
+        return function cleanup() {
+            props.connection.off(`ReceiveMessage${group}`, receiveMessage);
+        }
+    }, [group, messages, props.connected, props.connection]);
 
     const messageComponents = messages.map((value) => {
         return (
@@ -136,8 +146,7 @@ function Chat(props)
                 connection={props.connection}
                 messages={messages}
                 setMessages={setMessages}
-                receiveMessage={receiveMessage}
-                />
+            />
             <SendMessage connection={props.connection} connected={props.connected} group={group} />
             {messageComponents}
         </div>
