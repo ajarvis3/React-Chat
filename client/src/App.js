@@ -47,7 +47,7 @@ function AddGroup(props)
   return (
     <div className="add-group">
             <textarea 
-                className="style-ta" 
+                className="style-ta style-text-box" 
                 value={group} 
                 onChange={handleChange} 
                 placeholder="Group Name"/>

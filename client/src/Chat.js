@@ -8,7 +8,7 @@ import React, {useState, useEffect} from 'react';
 function Message(props)
 {
     return (
-        <div className="message">
+        <div className="message style-text-box">
             <div className="user-tag">
                 User: {props.user}
             </div>
@@ -46,12 +46,12 @@ function SendMessage(props)
         <div className="new-message">
             New Message:
             <textarea 
-                className="style-ta" 
+                className="style-ta style-text-box" 
                 value={name} 
                 onChange={handleName} 
                 placeholder="Name" />
             <textarea 
-                className="style-ta" 
+                className="style-ta style-text-box" 
                 value={message} 
                 onChange={handleChange} 
                 placeholder="Message" />

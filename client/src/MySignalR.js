@@ -8,7 +8,6 @@ const connections = {};
 
 function connect(url) {
     if (connections[url]) {
-        console.log('here');
         return connections[url];
     }
     const connection = new signalR.HubConnectionBuilder()

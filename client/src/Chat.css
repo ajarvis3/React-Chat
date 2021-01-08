@@ -34,6 +34,16 @@
     flex-direction: row;
 }
 
+.style-text-box {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    width: 30%;
+    margin: 10px auto;
+    padding: 5px;
+    box-shadow: 1px 1px #888888;
+}
+
 .message {
     display: flex;
     flex-direction: column;
@@ -42,4 +52,5 @@
 .style-ta {
     resize: none;
     margin: 5px auto;
+    width: 100%;
 }
