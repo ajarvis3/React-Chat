@@ -69,7 +69,8 @@ function App()
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
-    const url = 'https://localhost:5001/chathub';
+    const baseUrl = "https://signalr-react-chatapp.azurewebsites.net/";
+    const url = `${baseUrl}/chathub`;
     setConnection(connect(url));
     if (connection !== null) {
       connection.on('OnConnected', () => {
