@@ -24,14 +24,16 @@ namespace server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var url = "https://ajarvis3.github.io";
             if (env.IsDevelopment())
             {
+                // url = "localhost:3000/";
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseCors(builder =>
             {
-                builder.WithOrigins("http://localhost:3000")
+                builder.WithOrigins(url)
                     .AllowAnyHeader()
                     .WithMethods("GET", "POST")
                     .AllowCredentials();
