@@ -55,7 +55,7 @@ function SendMessage(props)
                 value={message} 
                 onChange={handleChange} 
                 placeholder="Message" />
-            <button onClick={sendMessage} disabled={!props.connected} className="style-button">
+            <button onClick={sendMessage} className="style-button">
                 Send Message
             </button>
      </div>
@@ -94,15 +94,13 @@ function Chat(props)
 
     // Sets up receiving message
     useEffect(() => {
-        if (props.connected) {
-            props.connection.on(`ReceiveMessage${props.group}`, receiveMessage);
-        }
+        props.connection.on(`ReceiveMessage${props.group}`, receiveMessage);
 
         // prevent multiple calls to event handler
         return function cleanup() {
             props.connection.off(`ReceiveMessage${props.group}`, receiveMessage);
         }
-    }, [props.group, messages, props.connected, props.connection, receiveMessage]);
+    }, [props.group, messages, props.connection, receiveMessage]);
 
     const messageComponents = messages.map((value) => {
         return (
@@ -115,8 +113,8 @@ function Chat(props)
             {props.group}
             <Delete 
                 group={props.group} 
-                delete={() => props.delete(props.group)} />
-            <SendMessage connection={props.connection} connected={props.connected} group={props.group} />
+                delete={() => props.delete(props.group, props.chats)} />
+            <SendMessage connection={props.connection} group={props.group} />
             {messageComponents}
         </div>
     )

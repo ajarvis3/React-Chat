@@ -1,7 +1,26 @@
 import './App.css';
-import connect from './MySignalR.js';
+// import connect from './MySignalR.js';
 import Chat from "./Chat.js";
 import React, {useState, useEffect, useCallback} from 'react';
+import * as signalR from "@microsoft/signalr";
+
+const connections = {};
+
+function connect(url, setConnected) {
+    if (connections[url]) {
+        return connections[url];
+    }
+    const connection = new signalR.HubConnectionBuilder()
+                            .withUrl(url)
+                            .configureLogging(signalR.LogLevel.Information)
+                            .build();
+    connection.start();
+    connection.on('OnConnected', () => {
+        setConnected(true);
+    });  
+    connections[url] = connection;
+    return connection;
+}
 
 /**
  * Contains logic for adding a group
@@ -10,39 +29,19 @@ import React, {useState, useEffect, useCallback} from 'react';
 function AddGroup(props) 
 {
   const [group, setGroup] = useState("");
+  const {chats, connection, setChats} = props;
 
-  function deleteChat(name)
-  {
-    const index = props.chats.findIndex((elem) => {
-      return elem.key === name;
-    });
-    const newChats = props.chats.splice(index, 1);
-    props.setChats(newChats);
-    props.connection.send("UnsubscribeChat", name);
-  }
+  const handleButton = useCallback(() => {
+    connection.send("SubscribeToChat", group);   
+    const newChats = chats.slice();
+    newChats.push(group);
+    setChats(newChats);
+    setGroup("");    
+  }, [chats, group, connection, setChats]);
 
-  const handleButton = () => {
-    if (props.connected)
-    {
-        props.connection.send("SubscribeToChat", group);   
-        const newChats = props.chats.slice();
-        newChats.push(<Chat 
-                        key={group}
-                        connected={props.connected}
-                        connection={props.connection}
-                        group={group} 
-                        delete={(name) => deleteChat(name)}/>);
-        props.setChats(newChats);
-        setGroup("");    
-    }
-  }
-
-  const handleChange = useCallback((event) => {
-      if (props.connected)
-      {
-          setGroup(event.target.value);
-      }
-  }, [props.connected]);
+  const handleChange = (event) => {
+      setGroup(event.target.value);
+  };
 
   return (
     <div className="add-group">
@@ -51,7 +50,7 @@ function AddGroup(props)
                 value={group} 
                 onChange={handleChange} 
                 placeholder="Group Name"/>
-            <button onClick={handleButton} disabled={!props.connected} className="style-button">
+            <button onClick={handleButton} className="style-button">
                 Join Group
             </button>
     </div>
@@ -64,31 +63,50 @@ function AddGroup(props)
  */
 function App() 
 {
-  const [connected, setConnected] = useState(false);
   const [connection, setConnection] = useState(null);
+  const [connected, setConnected] = useState(false);
   const [chats, setChats] = useState([]);
 
+  const deleteChat = useCallback((name, chats) => {
+    const index = chats.findIndex((elem) => {
+      return elem === name;
+    });
+    const newChats = chats.slice(); 
+    newChats.splice(index, 1);
+    setChats(newChats);
+    connection.send("UnsubscribeChat", name);
+}, [connection]);
+
   useEffect(() => {
-    const baseUrl = "https://signalr-react-chatapp.azurewebsites.net/";
+
+    const baseUrl = process.env.NODE_ENV === 'development' 
+                      ? "https://localhost:5001"
+                      : "https://signalr-react-chatapp.azurewebsites.net";
     const url = `${baseUrl}/chathub`;
-    setConnection(connect(url));
-    if (connection !== null) {
-      connection.on('OnConnected', () => {
-        setConnected(true);
-      });        
-    }
-  }, [connection])
+    setConnection(connect(url, setConnected));
+  }, []);
+
+  const chatElems = chats.map((value) => {
+    return (<Chat 
+    key={value}
+    connection={connection}
+    group={value} 
+    delete={deleteChat} 
+    chats={chats} />);
+  });
 
   return (
     <div className="app">
-      <AddGroup 
-        chats={chats} 
-        setChats={setChats}
-        connected={connected}
-        connection={connection} />
-        <div className="chats">
-          {chats}
-        </div>
+      {connected ? 
+        <AddGroup 
+          chats={chats} 
+          setChats={setChats}
+          connection={connection} 
+          deleteChat={deleteChat} />
+          : "Not Connected"}
+      <div className="chats">
+        {chatElems}
+      </div>
     </div>
   );
 }
