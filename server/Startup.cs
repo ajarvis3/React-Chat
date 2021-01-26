@@ -27,16 +27,27 @@ namespace server
             var url = "https://ajarvis3.github.io";
             if (env.IsDevelopment())
             {
-                // url = "localhost:3000/";
+                url = "http://localhost:3000";
                 app.UseDeveloperExceptionPage();
             }
+            System.Diagnostics.Trace.WriteLine(url);
 
+            // Like CORS for WebSockets
+            var webSocketOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
+            };
+            webSocketOptions.AllowedOrigins.Add(url);
+
+            app.UseWebSockets(webSocketOptions);
+
+            // CORS
             app.UseCors(builder =>
             {
                 builder.WithOrigins(url)
                     .AllowAnyHeader()
-                    .WithMethods("GET", "POST")
-                    .AllowCredentials();
+                    .WithMethods("GET", "POST");
+                    // .AllowCredentials();
             });
 
             app.UseRouting();
