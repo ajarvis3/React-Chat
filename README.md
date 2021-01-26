@@ -21,3 +21,5 @@ As of 1/26, I noticed the SignalR connection doesn't seem to be
 working properly anymore. Whereas before WebSockets were not configured,
 SSE does not seem to work either, now. Looking into the problem,
 Azure logs have been entirely unhelpful as of now.
+UPDATE: Ticking "Enable Access-Control-Allow-Credentials" under API
+in the Azure portal seems to be a temporary fix for SSE.
