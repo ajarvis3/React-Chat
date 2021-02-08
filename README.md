@@ -27,3 +27,4 @@ in the Azure portal seems to be a temporary fix for SSE.
 
 # Known Issues
 Availability: App doesn't always seem to work, and the console reports a CORS error. Further inspection reveals a 503 error at the server. In addition, the Azure console seems to be unavailable at these times. So, as best as I can tell, Azure doesn't like that it is a free app and might turn it off when it's inactive. Later on, the logs indicate lags in starting the app - most recently, I have restarted the app at 12:10 EST and logs didn't indicate the app was initialized successfully until 12:44 EST. Further observations will be made.
+Quick update on this... It has seemed that running the app more often leads to the app being more consistently available. Someimtes just waiting ~30(?) seconds seems to be enough time for the app to start. Regardless, I don't think there's anything I can do about it on the free Azure plan. 
