@@ -46,8 +46,8 @@ namespace server
             {
                 builder.WithOrigins(url)
                     .AllowAnyHeader()
-                    .WithMethods("GET", "POST");
-                    // .AllowCredentials();
+                    .WithMethods("GET", "POST")
+                    .AllowCredentials();
             });
 
             app.UseRouting();

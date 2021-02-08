@@ -14,10 +14,9 @@ function connect(url, setConnected) {
                             .withUrl(url)
                             .configureLogging(signalR.LogLevel.Information)
                             .build();
-    connection.start();
-    connection.on('OnConnected', () => {
-        setConnected(true);
-    });  
+    connection.start().then(() => {
+      setConnected(true);
+    });
     connections[url] = connection;
     return connection;
 }

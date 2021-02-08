@@ -1,21 +1,18 @@
 {
   "format": 1,
   "restore": {
-    "E:\\OneDrive\\Documents\\Programming\\React\\chat\\server\\server.csproj": {}
+    "C:\\Users\\Andre\\OneDrive\\Documents\\tem\\React-Chat\\server\\server.csproj": {}
   },
   "projects": {
-    "E:\\OneDrive\\Documents\\Programming\\React\\chat\\server\\server.csproj": {
+    "C:\\Users\\Andre\\OneDrive\\Documents\\tem\\React-Chat\\server\\server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\OneDrive\\Documents\\Programming\\React\\chat\\server\\server.csproj",
+        "projectUniqueName": "C:\\Users\\Andre\\OneDrive\\Documents\\tem\\React-Chat\\server\\server.csproj",
         "projectName": "server",
-        "projectPath": "E:\\OneDrive\\Documents\\Programming\\React\\chat\\server\\server.csproj",
+        "projectPath": "C:\\Users\\Andre\\OneDrive\\Documents\\tem\\React-Chat\\server\\server.csproj",
         "packagesPath": "C:\\Users\\Andre\\.nuget\\packages\\",
-        "outputPath": "E:\\OneDrive\\Documents\\Programming\\React\\chat\\server\\obj\\",
+        "outputPath": "C:\\Users\\Andre\\OneDrive\\Documents\\tem\\React-Chat\\server\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
           "C:\\Users\\Andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -60,7 +57,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

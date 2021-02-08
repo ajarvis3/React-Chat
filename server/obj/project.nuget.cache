@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NBhZtG+PK5KhuvdOHPzxND7UYh1gs/C5+a0l48TO9kBbgcRQltdFKBWW5yjhh+iP89dI1bbI1iqOe+IPr8QM8g==",
+  "dgSpecHash": "1FhlTxtqSWxaapPYkPc9oNT8y8n9dNT3j5C0fPF4IOiiRpdWX5Xuys4E17Ft8Yx7ctGY/8H0v4bQUnES1aUOkg==",
   "success": true,
-  "projectFilePath": "E:\\OneDrive\\Documents\\Programming\\React\\chat\\server\\server.csproj",
+  "projectFilePath": "C:\\Users\\Andre\\OneDrive\\Documents\\tem\\React-Chat\\server\\server.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
