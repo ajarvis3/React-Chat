@@ -16,6 +16,8 @@ function connect(url, setConnected) {
                             .build();
     connection.start().then(() => {
       setConnected(true);
+    }, () => {
+      console.log("fail");
     });
     connections[url] = connection;
     return connection;
